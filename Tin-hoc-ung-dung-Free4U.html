@@ -1,0 +1,1380 @@
+<!DOCTYPE html>
+<html lang="vi" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tin học ứng dụng Free4U - Làm chủ công cụ, vững vàng số liệu</title>
+    <!-- Tải Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tải Google Fonts: Be Vietnam Pro & Inter cho tiếng Việt sắc nét -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Tải Font Awesome cho các biểu tượng văn phòng & kế toán -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Be Vietnam Pro"', 'Inter', 'sans-serif'],
+                    },
+                    colors: {
+                        navy: {
+                            800: '#163A66',
+                            900: '#0F294A',
+                            950: '#091A30',
+                        },
+                        royal: {
+                            600: '#1D4ED8',
+                            700: '#1E40AF',
+                        },
+                        teal: {
+                            500: '#14B8A6',
+                            600: '#0D9488',
+                            700: '#0F766E',
+                        },
+                        amber: {
+                            500: '#F59E0B',
+                            600: '#D97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-600 selection:text-white">
+
+    <!-- ==================== 1. THANH ĐIỀU HƯỚNG (HEADER / NAVBAR) ==================== -->
+    <header id="navbar" class="sticky top-0 z-40 w-full bg-white/95 backdrop-blur-md border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo & Slogan -->
+                <a href="#home" class="flex items-center gap-3 group focus:outline-none">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-navy-900 via-royal-600 to-teal-600 flex items-center justify-center text-white shadow-md group-hover:scale-105 transition-transform">
+                        <!-- Biểu tượng đồ thị & bảng tính cách điệu SVG -->
+                        <svg class="w-6 h-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="3" width="18" height="18" rx="3" />
+                            <path d="M3 9h18" />
+                            <path d="M9 21V9" />
+                            <path d="M13 17l2-3 2 1.5 2-3.5" stroke="#F59E0B" stroke-width="2.4" />
+                        </svg>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-1.5">
+                            <span class="text-xl font-extrabold tracking-tight text-navy-900">Free<span class="text-teal-600">4U</span></span>
+                            <span class="hidden sm:inline-block text-[10px] font-bold uppercase tracking-wider px-2 py-0.5 rounded-full bg-teal-50 text-teal-700 border border-teal-200">Tin học ứng dụng</span>
+                        </div>
+                        <p class="text-xs text-slate-500 font-medium">Làm chủ công cụ - Vững vàng số liệu</p>
+                    </div>
+                </a>
+
+                <!-- Menu Desktop -->
+                <nav class="hidden lg:flex items-center gap-7 text-sm font-semibold text-slate-600">
+                    <a href="#home" class="hover:text-royal-600 transition-colors py-2">Trang chủ</a>
+                    <a href="#pillars" class="hover:text-royal-600 transition-colors py-2">Lĩnh vực đào tạo</a>
+                    <a href="#courses" class="hover:text-royal-600 transition-colors py-2">Khóa học & Tài liệu</a>
+                    <a href="#blog" class="hover:text-royal-600 transition-colors py-2">Góc chia sẻ</a>
+                    <a href="#consulting" class="hover:text-royal-600 transition-colors py-2">Tư vấn 1-1</a>
+                    <a href="#contact" class="hover:text-royal-600 transition-colors py-2">Liên hệ</a>
+                </nav>
+
+                <!-- Nút CTA & Nút Hamburger Mobile -->
+                <div class="flex items-center gap-3">
+                    <button onclick="openConsultModal('Tư vấn lộ trình miễn phí')" class="hidden sm:inline-flex items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm px-5 py-2.5 rounded-xl shadow-md shadow-amber-500/25 hover:shadow-lg hover:-translate-y-0.5 transition-all cursor-pointer">
+                        <i class="fa-solid fa-headset"></i>
+                        <span>Đăng ký tư vấn miễn phí</span>
+                    </button>
+
+                    <!-- Nút mở menu trên thiết bị di động -->
+                    <button id="mobile-menu-btn" aria-label="Mở menu" class="lg:hidden p-2.5 rounded-xl text-slate-700 hover:bg-slate-100 focus:outline-none transition-colors">
+                        <i class="fa-solid fa-bars text-xl" id="mobile-menu-icon"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-slate-100 px-4 pt-3 pb-6 shadow-xl">
+            <div class="flex flex-col space-y-2 text-base font-semibold text-slate-700">
+                <a href="#home" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Trang chủ</a>
+                <a href="#pillars" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Lĩnh vực đào tạo</a>
+                <a href="#courses" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Khóa học & Tài liệu</a>
+                <a href="#blog" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Góc chia sẻ</a>
+                <a href="#consulting" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Tư vấn 1-1</a>
+                <a href="#contact" onclick="closeMobileMenu()" class="px-4 py-2.5 rounded-xl hover:bg-slate-50 hover:text-royal-600">Liên hệ</a>
+                <div class="pt-2">
+                    <button onclick="closeMobileMenu(); openConsultModal('Tư vấn lộ trình miễn phí')" class="w-full flex justify-center items-center gap-2 bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-5 rounded-xl shadow-md">
+                        <i class="fa-solid fa-headset"></i>
+                        <span>Đăng ký tư vấn miễn phí</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== 2. HERO SECTION ==================== -->
+    <section id="home" class="relative overflow-hidden bg-gradient-to-br from-navy-950 via-navy-900 to-royal-700 text-white pt-12 pb-20 lg:pt-20 lg:pb-24">
+        <!-- Họa tiết nền lưới tinh tế -->
+        <div class="absolute inset-0 opacity-10 pointer-events-none" style="background-image: radial-gradient(#ffffff 1px, transparent 1px); background-size: 28px 28px;"></div>
+        <div class="absolute -top-24 -right-24 w-96 h-96 bg-teal-500/20 rounded-full blur-3xl pointer-events-none"></div>
+        <div class="absolute bottom-0 left-10 w-80 h-80 bg-royal-600/30 rounded-full blur-3xl pointer-events-none"></div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Cột trái: Nội dung giới thiệu & CTA -->
+                <div class="lg:col-span-6 space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-teal-300 text-xs sm:text-sm font-semibold">
+                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                        <span>Giải pháp thực chiến cho Kế toán & Văn phòng</span>
+                    </div>
+
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-tight tracking-tight">
+                        Làm Chủ <span class="text-teal-400">Tin Học Văn Phòng</span> & Phần Mềm Kế Toán <span class="text-amber-400">MISA</span> Cùng Free4U
+                    </h1>
+
+                    <p class="text-slate-200 text-base sm:text-lg leading-relaxed max-w-2xl mx-auto lg:mx-0">
+                        Giúp kế toán viên, nhân sự hành chính và chủ doanh nghiệp tối ưu hóa <strong class="text-white">80% thời gian xử lý số liệu</strong>, chuẩn hóa quy trình hạch toán trên MISA và xây dựng báo cáo quản trị trực quan, chính xác.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-2">
+                        <a href="#pillars" class="w-full sm:w-auto inline-flex justify-center items-center gap-2.5 bg-amber-500 hover:bg-amber-600 text-white font-bold px-7 py-3.5 rounded-xl shadow-lg shadow-amber-500/30 hover:-translate-y-0.5 transition-all">
+                            <span>Khám phá lộ trình học</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </a>
+                        <a href="#courses" class="w-full sm:w-auto inline-flex justify-center items-center gap-2.5 bg-white/10 hover:bg-white/20 text-white border border-white/25 font-semibold px-7 py-3.5 rounded-xl backdrop-blur-sm transition-all">
+                            <i class="fa-solid fa-gift text-teal-300"></i>
+                            <span>Nhận tài liệu miễn phí</span>
+                        </a>
+                    </div>
+
+                    <div class="pt-3 flex flex-wrap items-center justify-center lg:justify-start gap-x-6 gap-y-2 text-xs sm:text-sm text-slate-300">
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-teal-400"></i> Cập nhật Thông tư 200 & 133</span>
+                        <span class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-teal-400"></i> Thực hành trên bộ chứng từ thật</span>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Minh họa Dashboard Số liệu Kế toán & MISA trực quan -->
+                <div class="lg:col-span-6">
+                    <div class="relative mx-auto max-w-xl">
+                        <!-- Khung giao diện Dashboard chính -->
+                        <div class="bg-white rounded-2xl shadow-2xl border border-slate-200/80 p-4 sm:p-6 text-slate-800">
+                            <!-- Thanh tiêu đề cửa sổ giả lập -->
+                            <div class="flex items-center justify-between pb-4 mb-4 border-b border-slate-100">
+                                <div class="flex items-center gap-2">
+                                    <span class="w-3 h-3 rounded-full bg-rose-400"></span>
+                                    <span class="w-3 h-3 rounded-full bg-amber-400"></span>
+                                    <span class="w-3 h-3 rounded-full bg-emerald-400"></span>
+                                    <span class="ml-2 text-xs font-bold text-slate-500 bg-slate-100 px-2.5 py-1 rounded-md">
+                                        <i class="fa-solid fa-table-cells text-teal-600 mr-1"></i> Dashboard_TaiChinh_MISA_2026.xlsx
+                                    </span>
+                                </div>
+                                <span class="text-xs font-semibold text-teal-700 bg-teal-50 px-2.5 py-1 rounded-full">
+                                    <i class="fa-solid fa-rotate mr-1"></i> Đồng bộ MISA
+                                </span>
+                            </div>
+
+                            <!-- 3 Thẻ chỉ số KPI kế toán -->
+                            <div class="grid grid-cols-3 gap-3 mb-5">
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <p class="text-[11px] font-medium text-slate-500">Doanh thu thuần</p>
+                                    <p class="text-sm sm:text-base font-extrabold text-navy-900 mt-0.5">4,85 Tỷ</p>
+                                    <span class="inline-flex items-center text-[10px] font-bold text-emerald-600 mt-1">
+                                        <i class="fa-solid fa-arrow-trend-up mr-1"></i> +24,5%
+                                    </span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <p class="text-[11px] font-medium text-slate-500">Tồn quỹ tiền mặt</p>
+                                    <p class="text-sm sm:text-base font-extrabold text-teal-600 mt-0.5">1,28 Tỷ</p>
+                                    <span class="inline-flex items-center text-[10px] font-bold text-teal-700 mt-1">
+                                        <i class="fa-solid fa-check-double mr-1"></i> Khớp sổ cái
+                                    </span>
+                                </div>
+                                <div class="bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                    <p class="text-[11px] font-medium text-slate-500">Công nợ phải thu</p>
+                                    <p class="text-sm sm:text-base font-extrabold text-amber-600 mt-0.5">340 Tr</p>
+                                    <span class="inline-flex items-center text-[10px] font-bold text-slate-500 mt-1">
+                                        <i class="fa-regular fa-clock mr-1"></i> Trong hạn 96%
+                                    </span>
+                                </div>
+                            </div>
+
+                            <!-- Biểu đồ cột tăng trưởng & Bảng hạch toán MISA thu nhỏ -->
+                            <div class="grid grid-cols-1 sm:grid-cols-12 gap-4 items-end">
+                                <!-- Biểu đồ cột SVG -->
+                                <div class="sm:col-span-7 bg-slate-50/80 p-3.5 rounded-xl border border-slate-100">
+                                    <div class="flex justify-between items-center mb-3">
+                                        <span class="text-xs font-bold text-navy-900">Biểu đồ Dòng tiền & Lợi nhuận</span>
+                                        <span class="text-[10px] text-slate-400">Q1 - Q4</span>
+                                    </div>
+                                    <div class="flex items-end justify-between h-28 gap-2 pt-2 px-1">
+                                        <div class="w-full flex flex-col items-center gap-1">
+                                            <div class="w-full bg-royal-600/30 rounded-t-md h-12 relative group">
+                                                <div class="w-full bg-royal-600 rounded-t-md h-8 absolute bottom-0"></div>
+                                            </div>
+                                            <span class="text-[10px] font-semibold text-slate-500">T1</span>
+                                        </div>
+                                        <div class="w-full flex flex-col items-center gap-1">
+                                            <div class="w-full bg-royal-600/30 rounded-t-md h-16 relative">
+                                                <div class="w-full bg-royal-600 rounded-t-md h-11 absolute bottom-0"></div>
+                                            </div>
+                                            <span class="text-[10px] font-semibold text-slate-500">T2</span>
+                                        </div>
+                                        <div class="w-full flex flex-col items-center gap-1">
+                                            <div class="w-full bg-teal-500/30 rounded-t-md h-20 relative">
+                                                <div class="w-full bg-teal-600 rounded-t-md h-14 absolute bottom-0"></div>
+                                            </div>
+                                            <span class="text-[10px] font-semibold text-slate-500">T3</span>
+                                        </div>
+                                        <div class="w-full flex flex-col items-center gap-1">
+                                            <div class="w-full bg-teal-500/30 rounded-t-md h-24 relative">
+                                                <div class="w-full bg-teal-600 rounded-t-md h-18 absolute bottom-0"></div>
+                                            </div>
+                                            <span class="text-[10px] font-semibold text-slate-500">T4</span>
+                                        </div>
+                                        <div class="w-full flex flex-col items-center gap-1">
+                                            <div class="w-full bg-amber-500/30 rounded-t-md h-28 relative">
+                                                <div class="w-full bg-amber-500 rounded-t-md h-22 absolute bottom-0"></div>
+                                            </div>
+                                            <span class="text-[10px] font-bold text-amber-600">T5</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Bảng định khoản MISA mẫu -->
+                                <div class="sm:col-span-5 bg-navy-900 text-white p-3.5 rounded-xl">
+                                    <div class="flex items-center justify-between mb-2">
+                                        <span class="text-[11px] font-bold text-teal-300 uppercase tracking-wider">MISA SME Hạch toán</span>
+                                        <i class="fa-solid fa-shield-check text-emerald-400 text-xs"></i>
+                                    </div>
+                                    <div class="space-y-2 text-[11px]">
+                                        <div class="bg-white/10 p-2 rounded-lg flex justify-between">
+                                            <span class="text-slate-300">Nợ TK 1121:</span>
+                                            <span class="font-bold text-emerald-300">250.000.000đ</span>
+                                        </div>
+                                        <div class="bg-white/10 p-2 rounded-lg flex justify-between">
+                                            <span class="text-slate-300">Có TK 131:</span>
+                                            <span class="font-bold text-white">250.000.000đ</span>
+                                        </div>
+                                        <div class="text-[10px] text-teal-200 pt-1 flex items-center gap-1">
+                                            <i class="fa-solid fa-wand-magic-sparkles"></i>
+                                            <span>Tự động lập BCTC & Sổ cái</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Thẻ nổi góc dưới bên trái -->
+                        <div class="hidden sm:flex items-center gap-3 bg-white text-slate-800 px-4 py-3 rounded-xl shadow-xl border border-slate-100 absolute -bottom-5 -left-5">
+                            <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold text-lg">
+                                <i class="fa-solid fa-file-excel"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-extrabold text-navy-900">Power Query & Pivot</p>
+                                <p class="text-[11px] text-slate-500">Tổng hợp 100 sheet trong 5 giây</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Thanh thống kê nhanh (Stats Bar) -->
+            <div class="mt-16 pt-10 border-t border-white/15 grid grid-cols-2 lg:grid-cols-4 gap-6 text-center">
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-amber-400">5.000+</div>
+                    <div class="text-xs sm:text-sm text-slate-200 font-medium mt-1">Học viên & Kế toán viên</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-teal-400">100+</div>
+                    <div class="text-xs sm:text-sm text-slate-200 font-medium mt-1">Video & Tài liệu thực chiến</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-white">98%</div>
+                    <div class="text-xs sm:text-sm text-slate-200 font-medium mt-1">Hài lòng giải pháp tư vấn</div>
+                </div>
+                <div class="bg-white/5 backdrop-blur-sm rounded-2xl p-5 border border-white/10">
+                    <div class="text-2xl sm:text-3xl font-extrabold text-teal-400">1-1</div>
+                    <div class="text-xs sm:text-sm text-slate-200 font-medium mt-1">Hỗ trợ Ultraview tận tâm</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 3. LĨNH VỰC CHUYÊN MÔN CỐT LÕI (3 TRỤ CỘT) ==================== -->
+    <section id="pillars" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-teal-600 bg-teal-50 px-3.5 py-1.5 rounded-full">Giá trị cốt lõi từ Free4U</span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-navy-900 mt-4">3 Trụ Cột Năng Lực Cho Dân Văn Phòng & Kế Toán</h2>
+                <p class="text-slate-600 mt-3 text-base">Chương trình được thiết kế bài bản từ nền tảng thao tác đến tư duy quản trị số liệu, bám sát nghiệp vụ thực tế tại doanh nghiệp Việt Nam.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Trụ cột 1: Tin Học Văn Phòng Thực Chiến -->
+                <div class="group bg-slate-50 hover:bg-white rounded-2xl p-7 border border-slate-200/80 hover:border-royal-600/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-royal-600/10 text-royal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-royal-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-laptop-file"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-navy-900 mb-3">1. Tin Học Văn Phòng Thực Chiến</h3>
+                        <p class="text-sm text-slate-600 mb-5 leading-relaxed">Xóa bỏ thao tác thủ công rườm rà, làm chủ trọn bộ công cụ Microsoft Office để xử lý công việc nhanh gấp 5 lần.</p>
+                        
+                        <ul class="space-y-3 text-sm text-slate-700 mb-8">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>Excel nâng cao:</strong> Hàm lồng nhau (XLOOKUP, SUMIFS, INDEX-MATCH), Pivot Table & Power Query tự động hóa.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>Word chuẩn hành chính:</strong> Soạn thảo hợp đồng, công văn chuẩn Nghị định 30, trộn thư (Mail Merge) hàng loạt.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>PowerPoint chuyên nghiệp:</strong> Thiết kế slide báo cáo tài chính, biểu đồ trực quan thuyết phục ban lãnh đạo.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="openRoadmapModal('office')" class="w-full py-3 px-4 rounded-xl bg-white group-hover:bg-royal-600 text-royal-600 group-hover:text-white font-bold text-sm border border-royal-600/30 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        <span>Xem chi tiết lộ trình</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Trụ cột 2: Thành Thạo Phần Mềm Kế Toán MISA (Nổi bật) -->
+                <div class="group bg-navy-900 text-white rounded-2xl p-7 border-2 border-teal-500 shadow-xl hover:shadow-2xl transition-all duration-300 flex flex-col justify-between relative overflow-hidden">
+                    <div class="absolute top-4 right-4 bg-amber-500 text-white text-[11px] font-bold uppercase px-3 py-1 rounded-full">Thế mạnh số 1</div>
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-teal-500/20 text-teal-300 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-500 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-calculator"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">2. Thành Thạo Phần Mềm Kế Toán MISA</h3>
+                        <p class="text-sm text-slate-300 mb-5 leading-relaxed">Hướng dẫn cầm tay chỉ việc trên MISA SME & AMIS Kế toán từ lúc tạo dữ liệu đến khi lên Báo cáo tài chính hoàn chỉnh.</p>
+                        
+                        <ul class="space-y-3 text-sm text-slate-200 mb-8">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-400 mt-1"></i>
+                                <span><strong>Khởi tạo & Số dư đầu kỳ:</strong> Thiết lập danh mục vật tư, khách hàng, tài khoản theo đúng loại hình doanh nghiệp.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-400 mt-1"></i>
+                                <span><strong>Hạch toán trọn bộ phân hệ:</strong> Quỹ, Ngân hàng, Mua/Bán hàng, Kho, Tài sản cố định, Tiền lương & Thuế GTGT/TNDN.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-400 mt-1"></i>
+                                <span><strong>Đối chiếu & Lập BCTC:</strong> Kiểm tra sai lệch sổ sách, xử lý lỗi kho âm, khóa sổ và xuất báo cáo thuế chuẩn xác.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="openRoadmapModal('misa')" class="w-full py-3 px-4 rounded-xl bg-teal-600 hover:bg-teal-500 text-white font-bold text-sm shadow-lg transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        <span>Xem chi tiết lộ trình</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+
+                <!-- Trụ cột 3: Làm Chủ Số Liệu & Báo Cáo Quản Trị -->
+                <div class="group bg-slate-50 hover:bg-white rounded-2xl p-7 border border-slate-200/80 hover:border-teal-600/40 shadow-sm hover:shadow-xl transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="w-14 h-14 rounded-2xl bg-teal-600/10 text-teal-600 flex items-center justify-center text-2xl mb-6 group-hover:bg-teal-600 group-hover:text-white transition-colors">
+                            <i class="fa-solid fa-chart-pie"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-navy-900 mb-3">3. Làm Chủ Số Liệu & Báo Cáo Quản Trị</h3>
+                        <p class="text-sm text-slate-600 mb-5 leading-relaxed">Biến những bảng số liệu kế toán khô khan thành hệ thống Dashboard trực quan giúp chủ doanh nghiệp ra quyết định tức thì.</p>
+                        
+                        <ul class="space-y-3 text-sm text-slate-700 mb-8">
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>Kết nối dữ liệu MISA sang Excel:</strong> Xuất và chuẩn hóa sổ chi tiết tự động, không cần copy-paste thủ công.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>Dashboard Dòng tiền & Công nợ:</strong> Theo dõi thu - chi thực tế, cảnh báo công nợ quá hạn theo tuổi nợ.</span>
+                            </li>
+                            <li class="flex items-start gap-2.5">
+                                <i class="fa-solid fa-check text-teal-600 mt-1"></i>
+                                <span><strong>Phân tích Doanh thu - Chi phí:</strong> Đánh giá biên lợi nhuận từng mặt hàng, phòng ban và điểm hòa vốn.</span>
+                            </li>
+                        </ul>
+                    </div>
+                    <button onclick="openRoadmapModal('data')" class="w-full py-3 px-4 rounded-xl bg-white group-hover:bg-teal-600 text-teal-700 group-hover:text-white font-bold text-sm border border-teal-600/30 transition-colors flex items-center justify-center gap-2 cursor-pointer">
+                        <span>Xem chi tiết lộ trình</span>
+                        <i class="fa-solid fa-chevron-right text-xs"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 4. THƯ VIỆN KHÓA HỌC & TÀI NGUYÊN MIỄN PHÍ ==================== -->
+    <section id="courses" class="py-20 bg-slate-50 border-t border-slate-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row md:items-end justify-between mb-10 gap-6">
+                <div>
+                    <span class="text-xs font-bold uppercase tracking-widest text-royal-600 bg-royal-600/10 px-3.5 py-1.5 rounded-full">Học liệu & Công cụ thực hành</span>
+                    <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-navy-900 mt-3">Thư Viện Khóa Học & Tài Nguyên</h2>
+                    <p class="text-slate-600 mt-2 text-base">Chọn danh mục bên dưới để khám phá các khóa học thực chiến và bộ file mẫu tặng miễn phí từ Free4U.</p>
+                </div>
+
+                <!-- Tabs lọc danh mục tương tác bằng JS -->
+                <div class="flex flex-wrap gap-2" id="course-filters">
+                    <button data-filter="all" class="filter-btn active px-4 py-2.5 rounded-xl text-sm font-bold bg-navy-900 text-white shadow-sm transition-all cursor-pointer">
+                        Tất cả
+                    </button>
+                    <button data-filter="office" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer">
+                        Tin học văn phòng
+                    </button>
+                    <button data-filter="misa" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer">
+                        Kế toán MISA
+                    </button>
+                    <button data-filter="data" class="filter-btn px-4 py-2.5 rounded-xl text-sm font-semibold bg-white text-slate-600 hover:bg-slate-100 border border-slate-200 transition-all cursor-pointer">
+                        Làm chủ số liệu
+                    </button>
+                </div>
+            </div>
+
+            <!-- Lưới hiển thị khóa học / tài liệu (Được render & lọc động qua JS) -->
+            <div id="course-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                <!-- Nội dung thẻ sẽ được JavaScript khởi tạo từ dữ liệu chuẩn -->
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 5. GÓC CHIA SẺ KIẾN THỨC & MẸO XỬ LÝ NHANH ==================== -->
+    <section id="blog" class="py-20 bg-white border-t border-slate-200/70">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-teal-600 bg-teal-50 px-3.5 py-1.5 rounded-full">Kiến thức thực tế mỗi tuần</span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-navy-900 mt-4">Góc Chia Sẻ & Mẹo Xử Lý Nhanh</h2>
+                <p class="text-slate-600 mt-3 text-base">Những tình huống "dở khóc dở cười" khi làm sổ sách MISA và thủ thuật Excel giúp bạn xử lý công việc gọn gàng trong vài phút.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Bài viết 1 -->
+                <article class="bg-slate-50 rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 bg-gradient-to-r from-navy-900 to-royal-700 p-6 flex flex-col justify-between text-white relative">
+                            <span class="self-start text-xs font-bold bg-amber-500 text-white px-3 py-1 rounded-full">Nghiệp vụ MISA</span>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-200"><i class="fa-regular fa-clock mr-1"></i> 6 phút đọc</span>
+                                <i class="fa-solid fa-scale-balanced text-3xl text-white/30"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-navy-900 leading-snug mb-3">
+                                Cách xử lý chênh lệch Sổ cái và Bảng cân đối phát sinh trên MISA
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Hướng dẫn từng bước sử dụng công cụ đối chiếu chứng từ, kiểm tra ghi sổ và tìm ra nguyên nhân lệch số dư tài khoản chỉ trong 5 phút.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6">
+                        <button onclick="openArticleModal(0)" class="inline-flex items-center gap-2 text-sm font-bold text-royal-600 hover:text-navy-900 transition-colors cursor-pointer">
+                            <span>Đọc bài viết</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Bài viết 2 -->
+                <article class="bg-slate-50 rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 bg-gradient-to-r from-teal-700 to-teal-500 p-6 flex flex-col justify-between text-white relative">
+                            <span class="self-start text-xs font-bold bg-navy-900 text-white px-3 py-1 rounded-full">Mẹo Excel Kế Toán</span>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-teal-100"><i class="fa-regular fa-clock mr-1"></i> 5 phút đọc</span>
+                                <i class="fa-solid fa-file-excel text-3xl text-white/30"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-navy-900 leading-snug mb-3">
+                                5 hàm Excel kinh điển giúp kế toán tổng hợp dữ liệu trong 30 giây
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Ứng dụng thực tế SUMIFS đa điều kiện, XLOOKUP dò tìm hai chiều, SUBTOTAL tính tổng khi lọc dữ liệu và AGGREGATE bỏ qua dòng lỗi.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6">
+                        <button onclick="openArticleModal(1)" class="inline-flex items-center gap-2 text-sm font-bold text-teal-700 hover:text-navy-900 transition-colors cursor-pointer">
+                            <span>Đọc bài viết</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </article>
+
+                <!-- Bài viết 3 -->
+                <article class="bg-slate-50 rounded-2xl border border-slate-200/80 overflow-hidden hover:shadow-lg transition-all flex flex-col justify-between">
+                    <div>
+                        <div class="h-44 bg-gradient-to-r from-royal-700 to-indigo-800 p-6 flex flex-col justify-between text-white relative">
+                            <span class="self-start text-xs font-bold bg-teal-500 text-white px-3 py-1 rounded-full">Quyết toán & Khóa sổ</span>
+                            <div class="flex items-center justify-between">
+                                <span class="text-xs text-slate-200"><i class="fa-regular fa-clock mr-1"></i> 8 phút đọc</span>
+                                <i class="fa-solid fa-lock text-3xl text-white/30"></i>
+                            </div>
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-lg font-bold text-navy-900 leading-snug mb-3">
+                                Quy trình khóa sổ cuối năm trên phần mềm MISA tránh sai sót thuế
+                            </h3>
+                            <p class="text-sm text-slate-600 leading-relaxed">
+                                Checklist 7 bước bắt buộc trước khi lập BCTC: tính giá xuất kho, khấu hao TSCĐ, phân bổ CCDC, kết chuyển lãi lỗ và đối chiếu thuế GTGT.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="px-6 pb-6">
+                        <button onclick="openArticleModal(2)" class="inline-flex items-center gap-2 text-sm font-bold text-royal-600 hover:text-navy-900 transition-colors cursor-pointer">
+                            <span>Đọc bài viết</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </article>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 6. DỊCH VỤ TƯ VẤN & HỖ TRỢ DOANH NGHIỆP / CÁ NHÂN ==================== -->
+    <section id="consulting" class="py-20 bg-navy-900 text-white relative overflow-hidden">
+        <div class="absolute right-0 top-0 w-96 h-96 bg-teal-600/15 rounded-full blur-3xl pointer-events-none"></div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+                
+                <!-- Cột trái: Quy trình 4 bước tư vấn của Free4U -->
+                <div class="lg:col-span-7 space-y-8">
+                    <div>
+                        <span class="text-xs font-bold uppercase tracking-widest text-teal-300 bg-white/10 px-3.5 py-1.5 rounded-full">Đồng hành cùng doanh nghiệp & cá nhân</span>
+                        <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold mt-4 leading-tight">
+                            Dịch Vụ Tư Vấn Giải Pháp & Đào Tạo Cầm Tay Chỉ Việc 1-1
+                        </h2>
+                        <p class="text-slate-300 mt-3 text-base leading-relaxed">
+                            Bạn đang gặp khó khăn khi thiết lập hệ thống sổ sách trên MISA, file Excel công ty quá nặng và hay lỗi công thức, hay cần đào tạo nâng cao năng lực cho đội ngũ kế toán - hành chính? Free4U luôn sẵn sàng hỗ trợ.
+                        </p>
+                    </div>
+
+                    <!-- 4 Bước quy trình -->
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-amber-500 text-white font-extrabold flex items-center justify-center text-sm">01</span>
+                                <h3 class="font-bold text-base text-white">Tiếp nhận bài toán số liệu</h3>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Lắng nghe vướng mắc cụ thể về quy trình kế toán, báo cáo Excel hoặc lỗi phần mềm MISA đang gặp phải.</p>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-teal-500 text-white font-extrabold flex items-center justify-center text-sm">02</span>
+                                <h3 class="font-bold text-base text-white">Khảo sát & Chẩn đoán quy trình</h3>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Kiểm tra trực tiếp dữ liệu mẫu, rà soát lỗ hổng hạch toán và đánh giá mức độ tự động hóa hiện tại.</p>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-royal-600 text-white font-extrabold flex items-center justify-center text-sm">03</span>
+                                <h3 class="font-bold text-base text-white">Thiết kế giải pháp & Đào tạo</h3>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Xây dựng biểu mẫu chuẩn, thiết lập lại phân hệ MISA và hướng dẫn thực hành trực tiếp trên chính dữ liệu của bạn.</p>
+                        </div>
+
+                        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 hover:bg-white/10 transition-colors">
+                            <div class="flex items-center gap-3 mb-2">
+                                <span class="w-8 h-8 rounded-lg bg-emerald-500 text-white font-extrabold flex items-center justify-center text-sm">04</span>
+                                <h3 class="font-bold text-base text-white">Đồng hành & Bảo hành nghiệp vụ</h3>
+                            </div>
+                            <p class="text-xs sm:text-sm text-slate-300 leading-relaxed">Hỗ trợ giải đáp qua Zalo/Ultraview sau đào tạo, đảm bảo bạn vận hành trơn tru qua các kỳ báo cáo.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cột phải: Form đăng ký tư vấn nhanh ngay trên trang -->
+                <div class="lg:col-span-5">
+                    <div class="bg-white text-slate-800 rounded-2xl p-6 sm:p-8 shadow-2xl border border-slate-100">
+                        <div class="mb-6">
+                            <h3 class="text-xl font-extrabold text-navy-900">Đăng Ký Tư Vấn Nhanh</h3>
+                            <p class="text-sm text-slate-500 mt-1">Chuyên viên Free4U sẽ liên hệ lại qua Zalo/Điện thoại trong vòng 30 phút.</p>
+                        </div>
+
+                        <form id="inline-consult-form" class="space-y-4">
+                            <div>
+                                <label for="inline-name" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Họ và tên của bạn *</label>
+                                <input type="text" id="inline-name" required placeholder="VD: Nguyễn Thị Minh Anh" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600 focus:ring-2 focus:ring-royal-600/20">
+                            </div>
+
+                            <div>
+                                <label for="inline-phone" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Số điện thoại / Zalo *</label>
+                                <input type="tel" id="inline-phone" required placeholder="VD: 0912 345 678" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600 focus:ring-2 focus:ring-royal-600/20">
+                            </div>
+
+                            <div>
+                                <label for="inline-service" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nhu cầu cần hỗ trợ *</label>
+                                <select id="inline-service" class="w-full px-4 py-3 rounded-xl border border-slate-300 text-sm bg-white focus:outline-none focus:border-royal-600 focus:ring-2 focus:ring-royal-600/20">
+                                    <option value="Tư vấn & Hướng dẫn phần mềm kế toán MISA">Tư vấn & Hướng dẫn phần mềm kế toán MISA</option>
+                                    <option value="Đào tạo Tin học văn phòng / Excel cho doanh nghiệp">Đào tạo Tin học văn phòng / Excel cho doanh nghiệp</option>
+                                    <option value="Chuẩn hóa hệ thống báo cáo & Dashboard số liệu">Chuẩn hóa hệ thống báo cáo & Dashboard số liệu</option>
+                                    <option value="Hỗ trợ gỡ rối sổ sách & BCTC cuối năm">Hỗ trợ gỡ rối sổ sách & BCTC cuối năm</option>
+                                </select>
+                            </div>
+
+                            <div>
+                                <label for="inline-note" class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Mô tả ngắn vướng mắc (không bắt buộc)</label>
+                                <textarea id="inline-note" rows="2" placeholder="VD: Công ty mình đang dùng MISA SME 2023 nhưng bị lệch kho..." class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600 focus:ring-2 focus:ring-royal-600/20"></textarea>
+                            </div>
+
+                            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3.5 px-6 rounded-xl shadow-lg shadow-amber-500/30 transition-all flex items-center justify-center gap-2 cursor-pointer">
+                                <i class="fa-solid fa-paper-plane"></i>
+                                <span>Gửi yêu cầu tư vấn miễn phí</span>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 7. ĐÁNH GIÁ TỪ HỌC VIÊN & KẾ TOÁN TRƯỞNG ==================== -->
+    <section class="py-20 bg-slate-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-14">
+                <span class="text-xs font-bold uppercase tracking-widest text-royal-600 bg-royal-600/10 px-3.5 py-1.5 rounded-full">Phản hồi thực tế</span>
+                <h2 class="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-navy-900 mt-4">Học Viên & Doanh Nghiệp Nói Gì Về Free4U?</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- Đánh giá 1 -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-sm mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-sm text-slate-600 italic leading-relaxed mb-6">
+                            "Trước đây mỗi kỳ báo cáo mình mất gần 3 ngày để tổng hợp công nợ từ MISA ra Excel vì toàn làm thủ công. Sau khóa học Làm chủ số liệu của Free4U, mình dùng Power Query chỉ mất đúng 5 phút bấm Refresh là xong toàn bộ báo cáo cho sếp."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3.5 pt-4 border-t border-slate-100">
+                        <div class="w-11 h-11 rounded-full bg-navy-900 text-white font-bold flex items-center justify-center text-sm">TH</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-navy-900">Chị Trần Thu Hà</h4>
+                            <p class="text-xs text-slate-500">Kế toán trưởng - Công ty Thương mại Minh Phát</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đánh giá 2 -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-sm mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-sm text-slate-600 italic leading-relaxed mb-6">
+                            "Mình chuyển từ hành chính sang làm kế toán nội bộ nên rất bỡ ngỡ với MISA. Nhờ lộ trình 7 ngày và sự hỗ trợ Ultraview nhiệt tình của giảng viên Free4U, giờ mình đã tự tin hạch toán mua bán hàng, kho và đối chiếu thuế mượt mà."
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3.5 pt-4 border-t border-slate-100">
+                        <div class="w-11 h-11 rounded-full bg-teal-600 text-white font-bold flex items-center justify-center text-sm">NL</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-navy-900">Bạn Nguyễn Ngọc Linh</h4>
+                            <p class="text-xs text-slate-500">Kế toán tổng hợp - Hà Nội</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Đánh giá 3 -->
+                <div class="bg-white p-7 rounded-2xl border border-slate-200/80 shadow-sm flex flex-col justify-between">
+                    <div>
+                        <div class="flex text-amber-400 text-sm mb-4">
+                            <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                        </div>
+                        <p class="text-sm text-slate-600 italic leading-relaxed mb-6">
+                            "Free4U đã tư vấn chuẩn hóa lại toàn bộ biểu mẫu Excel và Dashboard dòng tiền cho công ty mình. Số liệu minh bạch, nhìn vào biểu đồ là biết ngay mặt hàng nào lãi, khoản nợ nào sắp đến hạn. Rất đáng tin cậy!"
+                        </p>
+                    </div>
+                    <div class="flex items-center gap-3.5 pt-4 border-t border-slate-100">
+                        <div class="w-11 h-11 rounded-full bg-royal-600 text-white font-bold flex items-center justify-center text-sm">ĐQ</div>
+                        <div>
+                            <h4 class="text-sm font-bold text-navy-900">Anh Đặng Quốc Quân</h4>
+                            <p class="text-xs text-slate-500">Giám đốc - Công ty Nội thất An Gia</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 8. CÂU HỎI THƯỜNG GẶP (FAQ ACCORDION) ==================== -->
+    <section class="py-20 bg-white border-t border-slate-200/70">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <span class="text-xs font-bold uppercase tracking-widest text-teal-600 bg-teal-50 px-3.5 py-1.5 rounded-full">Giải đáp thắc mắc</span>
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-navy-900 mt-4">Câu Hỏi Thường Gặp</h2>
+            </div>
+
+            <div class="space-y-4" id="faq-container">
+                <!-- FAQ 1 -->
+                <div class="faq-item border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center gap-4 font-bold text-navy-900 hover:bg-slate-100/70 transition-colors cursor-pointer">
+                        <span>1. Người mới bắt đầu hoặc mất gốc Excel/Kế toán có theo học được không?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                        Hoàn toàn được! Toàn bộ chương trình tại Free4U được thiết kế theo phương pháp "cầm tay chỉ việc", đi từ tư duy gốc rễ và thao tác chuẩn ngay từ đầu. Bạn sẽ được thực hành trên bộ chứng từ và file dữ liệu thực tế từ mức độ cơ bản đến nâng cao.
+                    </div>
+                </div>
+
+                <!-- FAQ 2 -->
+                <div class="faq-item border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center gap-4 font-bold text-navy-900 hover:bg-slate-100/70 transition-colors cursor-pointer">
+                        <span>2. Trong quá trình làm việc gặp lỗi trên phần mềm MISA thì Free4U hỗ trợ thế nào?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                        Học viên và khách hàng tư vấn của Free4U được tham gia nhóm hỗ trợ Zalo riêng và được giảng viên kết nối trực tiếp qua <strong>Ultraview / Teamviewer</strong> để kiểm tra dữ liệu, hướng dẫn xử lý tận gốc các lỗi hạch toán, lệch kho, lệch sổ cái hoặc lỗi kết xuất thuế.
+                    </div>
+                </div>
+
+                <!-- FAQ 3 -->
+                <div class="faq-item border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center gap-4 font-bold text-navy-900 hover:bg-slate-100/70 transition-colors cursor-pointer">
+                        <span>3. Tài liệu và khóa học có cập nhật theo các Thông tư, Nghị định mới nhất không?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                        Có. Tất cả bài giảng, file mẫu sổ sách và hướng dẫn hạch toán MISA đều được cập nhật liên tục theo Thông tư 200, Thông tư 133, quy định về hóa đơn điện tử (Nghị định 123 / Thông tư 78) và thể thức văn bản hành chính Nghị định 30.
+                    </div>
+                </div>
+
+                <!-- FAQ 4 -->
+                <div class="faq-item border border-slate-200 rounded-2xl overflow-hidden bg-slate-50/50">
+                    <button class="faq-btn w-full px-6 py-5 text-left flex justify-between items-center gap-4 font-bold text-navy-900 hover:bg-slate-100/70 transition-colors cursor-pointer">
+                        <span>4. Hình thức học tại Free4U là Online hay Offline?</span>
+                        <i class="fa-solid fa-chevron-down text-teal-600 transition-transform duration-300"></i>
+                    </button>
+                    <div class="faq-content hidden px-6 pb-5 text-sm text-slate-600 leading-relaxed border-t border-slate-100 pt-3">
+                        Free4U cung cấp linh hoạt cả 3 hình thức: (1) Học qua hệ thống Video bài giảng quay sẵn sắc nét kèm file thực hành; (2) Học trực tuyến tương tác 1-1 hoặc nhóm nhỏ qua Zoom/Google Meet; và (3) Đào tạo trực tiếp (In-house) tại văn phòng doanh nghiệp theo yêu cầu.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== 9. FOOTER (CHÂN TRANG) ==================== -->
+    <footer id="contact" class="bg-navy-950 text-slate-300 pt-16 pb-10 border-t border-white/10">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12 border-b border-white/10">
+                
+                <!-- Cột 1: Giới thiệu thương hiệu -->
+                <div class="lg:col-span-4 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-royal-600 to-teal-500 flex items-center justify-center text-white">
+                            <i class="fa-solid fa-chart-line text-lg"></i>
+                        </div>
+                        <div>
+                            <span class="text-xl font-extrabold text-white">Free<span class="text-teal-400">4U</span></span>
+                            <p class="text-[11px] text-slate-400">Tin Học Ứng Dụng Thực Chiến</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-slate-400 leading-relaxed">
+                        Đồng hành cùng cộng đồng kế toán, nhân sự văn phòng và chủ doanh nghiệp Việt Nam trên hành trình làm chủ công cụ tin học, chuẩn hóa phần mềm MISA và quản trị số liệu thông minh.
+                    </p>
+                    <div class="flex items-center gap-3 pt-2">
+                        <a href="#contact" aria-label="YouTube Free4U" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-rose-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-youtube"></i>
+                        </a>
+                        <a href="#contact" aria-label="Facebook Fanpage Free4U" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-royal-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-facebook-f"></i>
+                        </a>
+                        <a href="#contact" aria-label="TikTok Free4U" class="w-9 h-9 rounded-lg bg-white/10 hover:bg-teal-600 text-white flex items-center justify-center transition-colors">
+                            <i class="fa-brands fa-tiktok"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Cột 2: Lĩnh vực đào tạo -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="text-white font-bold text-base">Chuyên Môn Đào Tạo</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#pillars" class="hover:text-teal-400 transition-colors">Excel Kế Toán & Văn Phòng</a></li>
+                        <li><a href="#pillars" class="hover:text-teal-400 transition-colors">Phần mềm kế toán MISA SME</a></li>
+                        <li><a href="#pillars" class="hover:text-teal-400 transition-colors">Kế toán đám mây MISA AMIS</a></li>
+                        <li><a href="#pillars" class="hover:text-teal-400 transition-colors">Power Query & Dashboard Quản Trị</a></li>
+                        <li><a href="#pillars" class="hover:text-teal-400 transition-colors">Word & PowerPoint Chuyên Nghiệp</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 3: Tài nguyên hữu ích -->
+                <div class="lg:col-span-2 space-y-3">
+                    <h4 class="text-white font-bold text-base">Tài Nguyên</h4>
+                    <ul class="space-y-2.5 text-sm text-slate-400">
+                        <li><a href="#courses" class="hover:text-teal-400 transition-colors">Kho tài liệu miễn phí</a></li>
+                        <li><a href="#blog" class="hover:text-teal-400 transition-colors">Mẹo xử lý lỗi MISA</a></li>
+                        <li><a href="#blog" class="hover:text-teal-400 transition-colors">Thư viện hàm Excel</a></li>
+                        <li><a href="#consulting" class="hover:text-teal-400 transition-colors">Tư vấn doanh nghiệp</a></li>
+                    </ul>
+                </div>
+
+                <!-- Cột 4: Thông tin liên hệ -->
+                <div class="lg:col-span-3 space-y-3">
+                    <h4 class="text-white font-bold text-base">Liên Hệ Free4U</h4>
+                    <ul class="space-y-3 text-sm text-slate-400">
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-phone-volume text-teal-400 mt-1"></i>
+                            <div>
+                                <span class="block text-white font-semibold">0988.456.789 (Hotline / Zalo)</span>
+                                <span class="text-xs">Hỗ trợ từ 8:00 - 21:00 hàng ngày</span>
+                            </div>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-envelope text-teal-400 mt-1"></i>
+                            <span>hotro@tinhocfree4u.vn</span>
+                        </li>
+                        <li class="flex items-start gap-3">
+                            <i class="fa-solid fa-location-dot text-teal-400 mt-1"></i>
+                            <span>Tầng 5, Tòa nhà Văn phòng số 88, Quận Cầu Giấy, Hà Nội (Hỗ trợ Online toàn quốc)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-500">
+                <p>&copy; 2026 <strong class="text-slate-300">Tin học ứng dụng Free4U</strong>. Bảo lưu mọi quyền.</p>
+                <p>Thiết kế tối ưu cho cộng đồng Kế toán & Hành chính Văn phòng Việt Nam.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- ==================== TIỆN ÍCH NỔI (ZALO & BACK TO TOP) ==================== -->
+    <div class="fixed bottom-5 right-5 z-30 flex flex-col items-center gap-3">
+        <!-- Nút Lên đầu trang -->
+        <button id="back-to-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})" aria-label="Lên đầu trang" class="hidden w-11 h-11 rounded-full bg-navy-900 hover:bg-royal-600 text-white shadow-lg border border-white/15 items-center justify-center transition-all cursor-pointer">
+            <i class="fa-solid fa-arrow-up"></i>
+        </button>
+
+        <!-- Nút Liên hệ nhanh Zalo / Tư vấn -->
+        <button onclick="openConsultModal('Chat nhanh qua Zalo với chuyên viên Free4U')" class="group flex items-center gap-2.5 bg-royal-600 hover:bg-royal-700 text-white px-4 py-3 rounded-full shadow-xl shadow-royal-600/30 transition-all cursor-pointer">
+            <span class="w-7 h-7 rounded-full bg-white text-royal-600 font-extrabold text-xs flex items-center justify-center">Zalo</span>
+            <span class="text-xs sm:text-sm font-bold pr-1">Hỗ trợ ngay</span>
+        </button>
+    </div>
+
+    <!-- ==================== HỆ THỐNG MODAL TƯƠNG TÁC ==================== -->
+
+    <!-- Modal 1: Đăng ký tư vấn / Nhận tài liệu -->
+    <div id="consult-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative animate-[fadeIn_0.2s_ease-out]">
+            <button onclick="closeModal('consult-modal')" aria-label="Đóng" class="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl mb-4">
+                <i class="fa-solid fa-headset"></i>
+            </div>
+            <h3 id="modal-consult-title" class="text-xl font-extrabold text-navy-900">Đăng Ký Tư Vấn Miễn Phí</h3>
+            <p class="text-sm text-slate-500 mt-1 mb-5">Điền thông tin bên dưới để nhận tài liệu hoặc được giảng viên Free4U tư vấn lộ trình phù hợp nhất.</p>
+
+            <form id="modal-consult-form" class="space-y-4">
+                <input type="hidden" id="modal-topic-input" value="Tư vấn chung">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Họ và tên *</label>
+                    <input type="text" required placeholder="Nhập họ tên của bạn" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Số điện thoại / Zalo *</label>
+                    <input type="tel" required placeholder="Nhập số Zalo để nhận phản hồi" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Email (để gửi bộ file mẫu nếu có)</label>
+                    <input type="email" placeholder="example@gmail.com" class="w-full px-4 py-2.5 rounded-xl border border-slate-300 text-sm focus:outline-none focus:border-royal-600">
+                </div>
+                <button type="submit" class="w-full bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 rounded-xl shadow-md transition-all cursor-pointer">
+                    Xác nhận đăng ký
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal 2: Xem đề cương chi tiết Khóa học / Lộ trình / Tài liệu -->
+    <div id="detail-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeModal('detail-modal')" aria-label="Đóng" class="sticky top-0 float-right w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <span id="detail-badge" class="inline-block text-xs font-bold px-3 py-1 rounded-full bg-teal-50 text-teal-700 mb-3">Đề cương chi tiết</span>
+            <h3 id="detail-title" class="text-xl sm:text-2xl font-extrabold text-navy-900 pr-8">Tiêu đề khóa học</h3>
+            <p id="detail-desc" class="text-sm text-slate-600 mt-2 leading-relaxed">Mô tả khóa học</p>
+
+            <div class="mt-6 bg-slate-50 rounded-xl p-5 border border-slate-200/80">
+                <h4 class="text-sm font-bold text-navy-900 uppercase tracking-wider mb-3">
+                    <i class="fa-solid fa-list-check text-teal-600 mr-1.5"></i> Nội dung trọng tâm
+                </h4>
+                <ul id="detail-modules" class="space-y-2.5 text-sm text-slate-700">
+                    <!-- Danh sách chương học được render qua JS -->
+                </ul>
+            </div>
+
+            <div class="mt-6 flex flex-col sm:flex-row gap-3 justify-end">
+                <button onclick="closeModal('detail-modal')" class="px-5 py-2.5 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50 cursor-pointer">
+                    Đóng lại
+                </button>
+                <button id="detail-action-btn" class="px-6 py-2.5 rounded-xl bg-amber-500 hover:bg-amber-600 text-white font-bold text-sm shadow-md cursor-pointer">
+                    Đăng ký nhận tài liệu / tư vấn
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 3: Đọc bài viết hướng dẫn chi tiết (Blog) -->
+    <div id="article-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6 sm:p-8 shadow-2xl relative">
+            <button onclick="closeModal('article-modal')" aria-label="Đóng" class="sticky top-0 float-right w-9 h-9 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-600 flex items-center justify-center cursor-pointer">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <span id="article-tag" class="inline-block text-xs font-bold px-3 py-1 rounded-full bg-royal-600/10 text-royal-600 mb-3">Mẹo thực chiến</span>
+            <h3 id="article-title" class="text-xl sm:text-2xl font-extrabold text-navy-900 pr-8">Tiêu đề bài viết</h3>
+            <div class="text-xs text-slate-400 mt-2 mb-5 pb-4 border-b border-slate-100">
+                <span><i class="fa-solid fa-user-pen mr-1"></i> Đội ngũ chuyên môn Free4U</span>
+                <span class="mx-2">•</span>
+                <span><i class="fa-solid fa-check-circle text-teal-600 mr-1"></i> Đã kiểm chứng thực tế</span>
+            </div>
+
+            <div id="article-body" class="space-y-4 text-sm text-slate-700 leading-relaxed">
+                <!-- Nội dung bài viết mẫu sẽ được nạp tại đây -->
+            </div>
+
+            <div class="mt-8 p-4 rounded-xl bg-teal-50 border border-teal-200 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div class="text-xs sm:text-sm text-navy-900">
+                    <strong>Bạn vẫn đang vướng mắc với dữ liệu thực tế?</strong>
+                    <p class="text-slate-600">Đặt lịch để chuyên viên Free4U hỗ trợ kiểm tra trực tiếp.</p>
+                </div>
+                <button onclick="closeModal('article-modal'); openConsultModal('Hỗ trợ xử lý nghiệp vụ từ bài viết')" class="shrink-0 bg-teal-600 hover:bg-teal-700 text-white font-bold text-xs px-4 py-2.5 rounded-xl cursor-pointer">
+                    Nhờ hỗ trợ 1-1
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal 4: Thông báo gửi form thành công (Thay thế hoàn toàn alert()) -->
+    <div id="success-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-navy-950/70 backdrop-blur-sm p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-7 text-center shadow-2xl">
+            <div class="w-16 h-16 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center text-3xl mx-auto mb-4">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <h3 class="text-xl font-extrabold text-navy-900">Gửi Yêu Cầu Thành Công!</h3>
+            <p class="text-sm text-slate-600 mt-2 leading-relaxed">
+                Cảm ơn bạn đã tin tưởng <strong class="text-navy-900">Tin học ứng dụng Free4U</strong>. Chuyên viên của chúng tôi đã nhận thông tin và sẽ liên hệ lại qua Zalo/Điện thoại trong thời gian sớm nhất!
+            </p>
+            <button onclick="closeModal('success-modal')" class="mt-6 w-full bg-navy-900 hover:bg-royal-600 text-white font-bold py-3 rounded-xl text-sm transition-colors cursor-pointer">
+                Tuyệt vời, quay lại trang
+            </button>
+        </div>
+    </div>
+
+    <!-- ==================== JAVASCRIPT XỬ LÝ TƯƠNG TÁC ==================== -->
+    <script>
+        // 1. Dữ liệu Thư viện Khóa học & Tài nguyên Miễn phí
+        const coursesData = [
+            {
+                id: 1,
+                category: 'office',
+                categoryName: 'Tin học văn phòng',
+                badge: 'Chuyên sâu',
+                badgeColor: 'bg-royal-600 text-white',
+                title: 'Combo Excel Kế Toán Toàn Tập Từ Cơ Bản Đến Nâng Cao',
+                duration: '18 Giờ học',
+                lessons: '24 Bài thực hành',
+                desc: 'Làm chủ 40+ hàm xử lý số liệu kế toán, kỹ thuật lồng hàm thông minh, Pivot Table phân tích đa chiều và chuẩn hóa bảng tính không lỗi.',
+                modules: [
+                    'Module 1: Tư duy tổ chức cơ sở dữ liệu chuẩn trên Excel kế toán.',
+                    'Module 2: Thành thạo nhóm hàm điều kiện & dò tìm (SUMIFS, COUNTIFS, XLOOKUP, INDEX-MATCH).',
+                    'Module 3: Xử lý chuỗi, ngày tháng và làm sạch dữ liệu xuất từ phần mềm.',
+                    'Module 4: Lập báo cáo tổng hợp động với Pivot Table & Slicer.',
+                    'Module 5: Bảo mật công thức, phân quyền vùng nhập liệu và in ấn chuyên nghiệp.'
+                ]
+            },
+            {
+                id: 2,
+                category: 'misa',
+                categoryName: 'Kế toán MISA',
+                badge: 'Chuyên sâu',
+                badgeColor: 'bg-amber-500 text-white',
+                title: 'Làm Chủ Phần Mềm MISA SME & AMIS Trong 7 Ngày',
+                duration: '15 Giờ học',
+                lessons: '20 Bài thực chiến',
+                desc: 'Hướng dẫn thực hành trọn bộ nghiệp vụ kế toán doanh nghiệp thương mại - dịch vụ - sản xuất trên phần mềm MISA phiên bản mới nhất.',
+                modules: [
+                    'Ngày 1: Cài đặt, tạo dữ liệu kế toán mới và nhập số dư đầu kỳ chuẩn xác.',
+                    'Ngày 2: Hạch toán phân hệ Tiền mặt, Tiền gửi ngân hàng & Đối chiếu sổ phụ.',
+                    'Ngày 3: Nghiệp vụ Mua hàng, Bán hàng, Quản lý công nợ & Xuất hóa đơn điện tử.',
+                    'Ngày 4: Quản lý Kho, Tính giá xuất kho và Xử lý chênh lệch kiểm kê.',
+                    'Ngày 5: Tài sản cố định, Công cụ dụng cụ & Tính lương BHXH.',
+                    'Ngày 6-7: Khai thuế GTGT, Khóa sổ cuối kỳ và Lập Báo cáo tài chính hoàn chỉnh.'
+                ]
+            },
+            {
+                id: 3,
+                category: 'data',
+                categoryName: 'Làm chủ số liệu',
+                badge: 'Chuyên sâu',
+                badgeColor: 'bg-teal-600 text-white',
+                title: 'Thiết Kế Dashboard Quản Trị Dòng Tiền & Công Nợ',
+                duration: '12 Giờ học',
+                lessons: '15 Bài thực hành',
+                desc: 'Kết nối tự động dữ liệu từ MISA sang Excel bằng Power Query, xây dựng hệ thống biểu đồ trực quan giúp giám đốc nắm bắt sức khỏe tài chính.',
+                modules: [
+                    'Phần 1: Quy trình xuất sổ chi tiết từ MISA và chuẩn hóa nguồn dữ liệu.',
+                    'Phần 2: Ứng dụng Power Query gộp dữ liệu nhiều tháng/nhiều chi nhánh tự động.',
+                    'Phần 3: Thiết kế Dashboard theo dõi Dòng tiền thu - chi thực tế theo tuần/tháng.',
+                    'Phần 4: Xây dựng báo cáo phân tích Tuổi nợ khách hàng & Cảnh báo nợ quá hạn.',
+                    'Phần 5: Trình bày báo cáo quản trị trên 1 trang màn hình (One-page Report).'
+                ]
+            },
+            {
+                id: 4,
+                category: 'office',
+                categoryName: 'Tin học văn phòng',
+                badge: 'Miễn phí',
+                badgeColor: 'bg-emerald-500 text-white',
+                title: 'Bộ File Mẫu Sổ Sách & 30 Hàm Excel Kế Toán Hay Dùng',
+                duration: 'Tài liệu + Video',
+                lessons: '12 File mẫu chuẩn',
+                desc: 'Tặng miễn phí bộ file Excel mẫu: Bảng lương, Theo dõi xuất nhập tồn, Bảng trích khấu hao TSCĐ kèm file thực hành 30 hàm thông dụng nhất.',
+                modules: [
+                    'File 1: Mẫu Bảng tính lương & Trích nộp BHXH tự động cập nhật.',
+                    'File 2: Mẫu Sổ theo dõi Xuất - Nhập - Tồn kho và cảnh báo tồn tối thiểu.',
+                    'File 3: Bảng phân bổ chi phí trả trước & Khấu hao tài sản cố định.',
+                    'File 4: Ebook + File bài tập thực hành 30 hàm Excel văn phòng thiết yếu.'
+                ]
+            },
+            {
+                id: 5,
+                category: 'misa',
+                categoryName: 'Kế toán MISA',
+                badge: 'Miễn phí',
+                badgeColor: 'bg-emerald-500 text-white',
+                title: 'Cẩm Nang Xử Lý 15 Lỗi Thường Gặp Khi Khóa Sổ Trên MISA',
+                duration: 'Ebook PDF + Video',
+                lessons: '15 Tình huống',
+                desc: 'Tài liệu tổng hợp các lỗi kinh điển kế toán hay gặp trước kỳ quyết toán: kho âm, lệch thuế GTGT đầu vào, chưa kết chuyển lãi lỗ...',
+                modules: [
+                    'Tình huống 1-5: Lỗi xuất kho âm, đơn giá vốn bằng 0 và cách chạy lại giá xuất kho.',
+                    'Tình huống 6-10: Chênh lệch giữa Bảng kê thuế GTGT và Sổ cái TK 1331 / 33311.',
+                    'Tình huống 11-15: Lỗi kết chuyển lãi lỗ cuối năm và kiểm tra tính cân đối của BCTC.'
+                ]
+            },
+            {
+                id: 6,
+                category: 'office',
+                categoryName: 'Tin học văn phòng',
+                badge: 'Chuyên sâu',
+                badgeColor: 'bg-royal-600 text-white',
+                title: 'Soạn Thảo Văn Bản Hành Chính Word & Thuyết Trình Báo Cáo',
+                duration: '10 Giờ học',
+                lessons: '16 Bài thực hành',
+                desc: 'Chuẩn hóa kỹ năng trình bày hợp đồng, quy chế công ty theo Nghị định 30 và thiết kế slide báo cáo tài chính chuyên nghiệp trên PowerPoint.',
+                modules: [
+                    'Phần 1: Căn chỉnh lề, font chữ, đánh số trang và tạo mục lục tự động trên Word.',
+                    'Phần 2: Kỹ thuật trộn thư (Mail Merge) tạo hàng trăm hợp đồng/phiếu lương trong 1 phút.',
+                    'Phần 3: Tư duy trực quan hóa số liệu và thiết kế Slide PowerPoint báo cáo cuối năm.'
+                ]
+            }
+        ];
+
+        // 2. Dữ liệu Lộ trình chi tiết cho 3 Trụ cột
+        const roadmapsData = {
+            office: {
+                badge: 'Lộ trình Trụ cột 01',
+                title: 'Lộ Trình Tin Học Văn Phòng Thực Chiến (Excel - Word - PowerPoint)',
+                desc: 'Lộ trình từ cơ bản đến thành thạo dành cho nhân viên văn phòng, hành chính nhân sự và kế toán viên muốn nâng cao năng suất làm việc.',
+                modules: [
+                    'Giai đoạn 1 (Tuần 1): Chuẩn hóa tư duy dữ liệu, phím tắt tăng tốc và 25 hàm Excel cốt lõi.',
+                    'Giai đoạn 2 (Tuần 2): Thành thạo hàm lồng nhau, Pivot Table, Conditional Formatting cảnh báo dữ liệu.',
+                    'Giai đoạn 3 (Tuần 3): Soạn thảo văn bản hành chính chuẩn Nghị định 30 & Trộn thư tự động trên Word.',
+                    'Giai đoạn 4 (Tuần 4): Thiết kế biểu đồ báo cáo và Slide thuyết trình chuyên nghiệp trên PowerPoint.'
+                ]
+            },
+            misa: {
+                badge: 'Lộ trình Trụ cột 02',
+                title: 'Lộ Trình Làm Chủ Phần Mềm Kế Toán MISA SME & AMIS',
+                desc: 'Thực hành trực tiếp trên bộ chứng từ thực tế của doanh nghiệp, đảm bảo tự tin đảm nhận vị trí kế toán tổng hợp.',
+                modules: [
+                    'Giai đoạn 1: Khởi tạo dữ liệu kế toán, thiết lập danh mục và nhập số dư đầu kỳ.',
+                    'Giai đoạn 2: Thực hành hạch toán các phân hệ Quỹ, Ngân hàng, Mua hàng, Bán hàng, Kho.',
+                    'Giai đoạn 3: Quản lý TSCĐ, CCDC, Tính lương và Lập tờ khai thuế GTGT, TNCN, TNDN.',
+                    'Giai đoạn 4: Kiểm tra đối chiếu sổ sách cuối kỳ, xử lý sai lệch và lập Báo cáo tài chính.'
+                ]
+            },
+            data: {
+                badge: 'Lộ trình Trụ cột 03',
+                title: 'Lộ Trình Làm Chủ Số Liệu & Xây Dựng Dashboard Quản Trị',
+                desc: 'Dành cho kế toán tổng hợp, kế toán trưởng và chủ doanh nghiệp muốn tự động hóa báo cáo và kiểm soát dòng tiền chặt chẽ.',
+                modules: [
+                    'Giai đoạn 1: Kết nối và chuẩn hóa dữ liệu xuất từ phần mềm MISA sang Excel.',
+                    'Giai đoạn 2: Ứng dụng Power Query để tự động hóa khâu tổng hợp báo cáo định kỳ.',
+                    'Giai đoạn 3: Xây dựng hệ thống chỉ số KPI tài chính (Dòng tiền, Công nợ, Biên lợi nhuận).',
+                    'Giai đoạn 4: Thiết kế Dashboard tương tác trực quan phục vụ họp giao ban lãnh đạo.'
+                ]
+            }
+        };
+
+        // 3. Dữ liệu Bài viết chi tiết (Góc chia sẻ)
+        const articlesData = [
+            {
+                tag: 'Nghiệp vụ MISA',
+                title: 'Cách xử lý chênh lệch Sổ cái và Bảng cân đối phát sinh trên MISA',
+                content: `
+                    <p>Tình trạng số liệu trên <strong>Sổ cái</strong> không khớp với <strong>Bảng cân đối phát sinh</strong> hoặc sổ chi tiết là một trong những lỗi khiến nhiều kế toán lo lắng nhất trước kỳ khóa sổ. Dưới đây là 3 bước kiểm tra chuẩn từ Free4U:</p>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <p class="font-bold text-navy-900">Bước 1: Kiểm tra các chứng từ chưa ghi sổ</p>
+                        <p>Vào menu <strong>Tiện ích -> Tìm kiếm chứng từ</strong>, lọc trạng thái <em>"Chưa ghi sổ"</em> trong kỳ báo cáo. Nhiều trường hợp chứng từ đã lưu nhưng chưa bấm Ghi sổ nên không lên Sổ cái.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <p class="font-bold text-navy-900">Bước 2: Chạy công cụ Đối chiếu chứng từ và sổ sách</p>
+                        <p>Trên MISA SME, vào <strong>Tiện ích -> Kiểm tra, đối chiếu chứng từ, sổ sách</strong>. Phần mềm sẽ tự động chỉ ra các cặp tài khoản hạch toán lệch giữa phân hệ Kho, Công nợ, Thuế với Sổ cái.</p>
+                    </div>
+                    <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 space-y-2">
+                        <p class="font-bold text-navy-900">Bước 3: Bảo trì dữ liệu kế toán</p>
+                        <p>Sao lưu dữ liệu trước, sau đó vào <strong>Tệp -> Bảo trì dữ liệu</strong> để phần mềm tính toán lại toàn bộ số dư và phát sinh các tài khoản.</p>
+                    </div>
+                `
+            },
+            {
+                tag: 'Mẹo Excel Kế Toán',
+                title: '5 hàm Excel kinh điển giúp kế toán tổng hợp dữ liệu trong 30 giây',
+                content: `
+                    <p>Thay vì cộng tay hoặc lọc từng mã hàng rồi copy sang sheet khác, kế toán hiện đại chỉ cần kết hợp nhuần nhuyễn 5 hàm sau:</p>
+                    <ul class="list-disc pl-5 space-y-2.5">
+                        <li><strong>SUMIFS:</strong> Tính tổng phát sinh theo nhiều điều kiện cùng lúc (ví dụ: tổng doanh thu theo từng mã khách hàng và theo từng tháng).</li>
+                        <li><strong>XLOOKUP:</strong> Thay thế hoàn hảo cho VLOOKUP, cho phép dò tìm từ phải sang trái và tự động trả về giá trị mặc định khi không tìm thấy mà không cần lồng IFERROR.</li>
+                        <li><strong>SUBTOTAL (mã hàm 9 hoặc 109):</strong> Tính tổng chính xác chỉ cho các dòng đang hiển thị sau khi bạn dùng AutoFilter.</li>
+                        <li><strong>EOMONTH:</strong> Tự động xác định ngày cuối cùng của tháng, cực kỳ hữu ích khi lập bảng phân bổ chi phí trả trước hoặc tính tuổi nợ.</li>
+                        <li><strong>ROUND:</strong> Làm tròn số tiền sau thuế hoặc đơn giá xuất kho để tránh lệch 1-2 đồng lẻ khi đối chiếu với hóa đơn điện tử.</li>
+                    </ul>
+                `
+            },
+            {
+                tag: 'Quyết toán & Khóa sổ',
+                title: 'Quy trình khóa sổ cuối năm trên phần mềm MISA tránh sai sót thuế',
+                content: `
+                    <p>Để bộ Báo cáo tài chính cuối năm khớp 100% với tờ khai quyết toán thuế, bạn hãy thực hiện tuần tự theo Checklist 6 bước sau trước khi bấm khóa sổ:</p>
+                    <ol class="list-decimal pl-5 space-y-2.5">
+                        <li><strong>Đối chiếu Tiền mặt & Ngân hàng:</strong> Kiểm tra khớp từng giao dịch với Biên bản kiểm kê quỹ và Sổ phụ ngân hàng đến ngày 31/12.</li>
+                        <li><strong>Tính giá xuất kho:</strong> Vào phân hệ <em>Kho -> Tính giá xuất kho</em> cho cả năm tài chính, đảm bảo không có vật tư nào bị âm số lượng hoặc âm giá trị.</li>
+                        <li><strong>Khấu hao TSCĐ & Phân bổ CCDC:</strong> Kiểm tra đã chạy đủ 12 kỳ khấu hao/phân bổ và đối chiếu khớp với Sổ cái TK 214, TK 242.</li>
+                        <li><strong>Đối chiếu Thuế GTGT:</strong> So sánh số dư cuối kỳ TK 1331 hoặc TK 33311 trên Bảng cân đối phát sinh với chỉ tiêu trên Tờ khai thuế Quý 4.</li>
+                        <li><strong>Kết chuyển lãi lỗ:</strong> Thực hiện bút toán kết chuyển tự động để đưa số dư các tài khoản đầu 5, 6, 7, 8, 9 về bằng 0.</li>
+                        <li><strong>Sao lưu & Khóa sổ kỳ kế toán:</strong> Vào <em>Nghiệp vụ -> Tổng hợp -> Khóa sổ kỳ kế toán</em> để tránh người dùng vô tình sửa nhầm chứng từ năm cũ.</li>
+                    </ol>
+                `
+            }
+        ];
+
+        // 4. Render Danh sách Khóa học & Tài liệu
+        const courseGrid = document.getElementById('course-grid');
+        function renderCourses(filter = 'all') {
+            const filtered = filter === 'all' 
+                ? coursesData 
+                : coursesData.filter(item => item.category === filter);
+
+            courseGrid.innerHTML = filtered.map(course => `
+                <div class="bg-white rounded-2xl border border-slate-200/90 p-6 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center justify-between gap-2 mb-4">
+                            <span class="text-xs font-bold text-slate-500 bg-slate-100 px-3 py-1 rounded-lg">${course.categoryName}</span>
+                            <span class="text-xs font-bold px-3 py-1 rounded-full ${course.badgeColor}">${course.badge}</span>
+                        </div>
+                        <h3 class="text-lg font-bold text-navy-900 leading-snug mb-2.5">${course.title}</h3>
+                        <p class="text-sm text-slate-600 leading-relaxed mb-5">${course.desc}</p>
+                    </div>
+                    <div>
+                        <div class="flex items-center justify-between text-xs text-slate-500 font-medium py-3 border-t border-slate-100 mb-4">
+                            <span><i class="fa-regular fa-clock text-teal-600 mr-1"></i> ${course.duration}</span>
+                            <span><i class="fa-solid fa-layer-group text-royal-600 mr-1"></i> ${course.lessons}</span>
+                        </div>
+                        <button onclick="openCourseDetail(${course.id})" class="w-full py-2.5 px-4 rounded-xl font-bold text-sm transition-colors flex items-center justify-center gap-2 cursor-pointer ${course.badge === 'Miễn phí' ? 'bg-teal-600 hover:bg-teal-700 text-white' : 'bg-navy-900 hover:bg-royal-600 text-white'}">
+                            <i class="fa-solid ${course.badge === 'Miễn phí' ? 'fa-download' : 'fa-book-open'}"></i>
+                            <span>${course.badge === 'Miễn phí' ? 'Nhận tài liệu miễn phí' : 'Xem nội dung chi tiết'}</span>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Khởi tạo hiển thị ban đầu
+        renderCourses('all');
+
+        // Xử lý sự kiện click bộ lọc danh mục
+        document.querySelectorAll('.filter-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                document.querySelectorAll('.filter-btn').forEach(b => {
+                    b.classList.remove('active', 'bg-navy-900', 'text-white', 'shadow-sm');
+                    b.classList.add('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+                });
+                btn.classList.add('active', 'bg-navy-900', 'text-white', 'shadow-sm');
+                btn.classList.remove('bg-white', 'text-slate-600', 'border', 'border-slate-200');
+                
+                renderCourses(btn.getAttribute('data-filter'));
+            });
+        });
+
+        // 5. Điều khiển Menu Mobile
+        const mobileMenuBtn = document.getElementById('mobile-menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const mobileMenuIcon = document.getElementById('mobile-menu-icon');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isHidden = mobileMenu.classList.contains('hidden');
+            if (isHidden) {
+                mobileMenu.classList.remove('hidden');
+                mobileMenuIcon.classList.replace('fa-bars', 'fa-xmark');
+            } else {
+                closeMobileMenu();
+            }
+        });
+
+        function closeMobileMenu() {
+            mobileMenu.classList.add('hidden');
+            mobileMenuIcon.classList.replace('fa-xmark', 'fa-bars');
+        }
+
+        // 6. Điều khiển FAQ Accordion
+        document.querySelectorAll('.faq-btn').forEach(btn => {
+            btn.addEventListener('click', () => {
+                const content = btn.nextElementSibling;
+                const icon = btn.querySelector('i');
+                const isOpen = !content.classList.contains('hidden');
+
+                // Đóng các mục khác để giao diện gọn gàng
+                document.querySelectorAll('.faq-content').forEach(c => c.classList.add('hidden'));
+                document.querySelectorAll('.faq-btn i').forEach(i => i.classList.remove('rotate-180'));
+
+                if (!isOpen) {
+                    content.classList.remove('hidden');
+                    icon.classList.add('rotate-180');
+                }
+            });
+        });
+
+        // 7. Hệ thống Mở / Đóng Modal
+        function openModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal(id) {
+            const modal = document.getElementById(id);
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = '';
+        }
+
+        // Mở Modal Đăng ký tư vấn / Nhận tài liệu
+        function openConsultModal(topic) {
+            document.getElementById('modal-consult-title').textContent = topic;
+            document.getElementById('modal-topic-input').value = topic;
+            openModal('consult-modal');
+        }
+
+        // Mở Modal Chi tiết Khóa học / Tài liệu
+        function openCourseDetail(courseId) {
+            const course = coursesData.find(c => c.id === courseId);
+            if (!course) return;
+
+            document.getElementById('detail-badge').textContent = `${course.categoryName} • ${course.badge}`;
+            document.getElementById('detail-title').textContent = course.title;
+            document.getElementById('detail-desc').textContent = course.desc;
+            document.getElementById('detail-modules').innerHTML = course.modules.map(m => `
+                <li class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-circle-check text-teal-600 mt-1"></i>
+                    <span>${m}</span>
+                </li>
+            `).join('');
+
+            const actionBtn = document.getElementById('detail-action-btn');
+            actionBtn.textContent = course.badge === 'Miễn phí' ? 'Đăng ký tải bộ tài liệu này' : 'Đăng ký tư vấn khóa học này';
+            actionBtn.onclick = () => {
+                closeModal('detail-modal');
+                openConsultModal(course.title);
+            };
+
+            openModal('detail-modal');
+        }
+
+        // Mở Modal Chi tiết Lộ trình 3 Trụ cột
+        function openRoadmapModal(pillarKey) {
+            const roadmap = roadmapsData[pillarKey];
+            if (!roadmap) return;
+
+            document.getElementById('detail-badge').textContent = roadmap.badge;
+            document.getElementById('detail-title').textContent = roadmap.title;
+            document.getElementById('detail-desc').textContent = roadmap.desc;
+            document.getElementById('detail-modules').innerHTML = roadmap.modules.map(m => `
+                <li class="flex items-start gap-2.5">
+                    <i class="fa-solid fa-arrow-right text-royal-600 mt-1"></i>
+                    <span>${m}</span>
+                </li>
+            `).join('');
+
+            const actionBtn = document.getElementById('detail-action-btn');
+            actionBtn.textContent = 'Nhận tư vấn lộ trình học phù hợp';
+            actionBtn.onclick = () => {
+                closeModal('detail-modal');
+                openConsultModal(roadmap.title);
+            };
+
+            openModal('detail-modal');
+        }
+
+        // Mở Modal Đọc bài viết Blog
+        function openArticleModal(index) {
+            const article = articlesData[index];
+            if (!article) return;
+
+            document.getElementById('article-tag').textContent = article.tag;
+            document.getElementById('article-title').textContent = article.title;
+            document.getElementById('article-body').innerHTML = article.content;
+            openModal('article-modal');
+        }
+
+        // Đóng modal khi bấm ra vùng nền tối bên ngoài
+        ['consult-modal', 'detail-modal', 'article-modal', 'success-modal'].forEach(id => {
+            document.getElementById(id).addEventListener('click', (e) => {
+                if (e.target.id === id) closeModal(id);
+            });
+        });
+
+        // 8. Xử lý Gửi Form (Inline Form & Modal Form)
+        document.getElementById('inline-consult-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.reset();
+            openModal('success-modal');
+        });
+
+        document.getElementById('modal-consult-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            this.reset();
+            closeModal('consult-modal');
+            openModal('success-modal');
+        });
+
+        // 9. Hiển thị nút Back-to-top khi cuộn trang
+        const backToTopBtn = document.getElementById('back-to-top');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                backToTopBtn.classList.remove('hidden');
+                backToTopBtn.classList.add('flex');
+            } else {
+                backToTopBtn.classList.add('hidden');
+                backToTopBtn.classList.remove('flex');
+            }
+        });
+    </script>
+</body>
+</html>
